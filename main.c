@@ -50,4 +50,4 @@ int main() {
     free(matriz); // Libera o array de ponteiros
 
     return 0;
-}
+} 
