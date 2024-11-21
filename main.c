@@ -1,53 +1,59 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main() {
-    int **matriz; // Ponteiro para ponteiro para armazenar a matriz
-    int linha, coluna;
-    int i, j;
-
-    // Leitura do número de linhas e colunas
-    printf("Digite o número de linhas e colunas: ");
-    scanf("%d %d", &linha, &coluna);
-
-    // Alocação dinâmica da matriz (array de ponteiros)
-    matriz = (int **)malloc(linha * sizeof(int *));
-    if (matriz == NULL) {
-        printf("Erro ao alocar memória para as linhas.\n");
-        return 1;
+void imprimir_matriz(int **mat, int colunas, int linhas)
+{
+    if (linhas == 0 || colunas == 0)
+    {
+        printf("[matriz vazia]");
+        return;
     }
-
-    // Alocação das colunas para cada linha
-    for (i = 0; i < linha; i++) {
-        matriz[i] = (int *)malloc(coluna * sizeof(int));
-        if (matriz[i] == NULL) {
-            printf("Erro ao alocar memória para a linha %d.\n", i);
-            return 1;
+    for (int l = 0; l < linhas; l++)
+    {
+        for (int c = 0; c < colunas; c++)
+        {
+            printf("%d", mat[l][c]);
+            if (c < colunas - 1)
+            {
+                printf(" ");
+            }
         }
-    }
 
-    // Preenchendo a matriz com valores fornecidos pelo usuário
-    printf("Digite os elementos da matriz:\n");
-    for (i = 0; i < linha; i++) {
-        for (j = 0; j < coluna; j++) {
-            scanf("%d", &matriz[i][j]);
-        }
-    }
-
-    // Exibindo a matriz
-    printf("Matriz:\n");
-    for (i = 0; i < linha; i++) {
-        for (j = 0; j < coluna; j++) {
-            printf("%d ", matriz[i][j]);
-        }
         printf("\n");
     }
+}
 
-    // Liberando a memória alocada
-    for (i = 0; i < linha; i++) {
-        free(matriz[i]); // Libera cada linha
+void destroi_matriz(int **mat, int linhas)
+{
+    for (int l = 0; l < linhas; l++)
+        free(mat[l]);
+    free(mat);
+}
+
+int main()
+{
+
+    int lin, col;
+
+    scanf("%d", &lin);
+    scanf("%d", &col);
+
+    int **matriz;
+
+    matriz = (int **)malloc(lin * sizeof(int *));
+    for (int i = 0; i < lin; i++)
+        matriz[i] = (int *)malloc(col * sizeof(int));
+
+    for (int l = 0; l < lin; l++)
+    {
+        for (int c = 0; c < col; c++)
+        {
+            scanf("%d", &matriz[l][c]);
+        }
     }
-    free(matriz); // Libera o array de ponteiros
+
+    imprimir_matriz(matriz, col, lin);
+    destroi_matriz(matriz, lin);
 
     return 0;
-} 
+}
